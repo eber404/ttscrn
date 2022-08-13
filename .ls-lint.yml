@@ -1,0 +1,13 @@
+ls:
+  .dir: kebab-case
+  .ts: kebab-case
+  .spec.ts: kebab-case
+  .config.ts: kebab-case
+
+ignore:
+  - .git
+  - coverage
+  - dist
+  - node_modules
+  - .idea
+  - .husky
