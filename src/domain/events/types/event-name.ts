@@ -1,0 +1,6 @@
+export type EventName =
+  | "INVALID_TWEET_URL"
+  | "PRIVATE_TWITTER_ACCOUNT"
+  | "TWEET_FOUND"
+  | "TWEET_READY_TO_PRINT"
+  | "VALID_TWITTER_URL";
