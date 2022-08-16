@@ -1,4 +1,4 @@
-import isUrl from "is-url";
+import { isURL } from "class-validator";
 import { Result, Ok, Err } from "oxide.ts";
 
 import { errorMessage } from "@/domain/errors/error-message";
@@ -15,12 +15,12 @@ export class Url {
   public static validate(url: string): [boolean, string] {
     const errors = [];
 
-    const isValid = isUrl(url);
+    const isValid = isURL(url);
 
     if (!isValid) {
       errors.push(errorMessage.invalid_url());
     }
 
-    return [isValid, errors.toString()];
+    return [isValid, errors.join(", ")];
   }
 }

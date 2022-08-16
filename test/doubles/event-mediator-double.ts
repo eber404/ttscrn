@@ -2,7 +2,7 @@ import { DomainEvent } from "@/domain/events/types/domain-event";
 import { EventHandler } from "@/domain/events/types/event-handler";
 import { EventMediator } from "@/domain/events/types/event-mediator";
 
-export class DomainMediator implements EventMediator {
+export class EventMediatorDouble implements EventMediator {
   private readonly handlers: EventHandler[] = [];
 
   public subscribe(handler: EventHandler): void {

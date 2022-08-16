@@ -25,7 +25,7 @@ export class TweetUrl extends Url {
     const isValid = url.includes("twitter.com");
 
     if (!isValid) {
-      errors.push(errorMessage.invalid_tweet_url);
+      errors.push(errorMessage.invalid_tweet_url(url));
     }
 
     return [isValid, errors.join(", ")];

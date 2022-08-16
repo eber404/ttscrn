@@ -1,7 +1,6 @@
 import { errorMessage } from "@/domain/errors/error-message";
+import { DomainException } from "@/domain/errors/exceptions/domain-exception";
 import { Url } from "@/domain/value-objects/url";
-
-import { DomainException } from "../errors/exceptions/domain-exception";
 
 export interface AuthorProps {
   name: string;
@@ -11,6 +10,7 @@ export interface AuthorProps {
 
 export class Author {
   private static readonly errors: string[] = [];
+  private static readonly VALID_USER_CHARACTERS = /[A-Za-z0-9_]+/gim;
 
   private constructor(
     public readonly name: string,
@@ -31,18 +31,16 @@ export class Author {
   }
 
   public static new(props: AuthorProps): Author {
-    if (props.name?.length < 4 || props.name?.length > 15) {
-      this.addError(errorMessage.invalid_author_name_length);
+    if (props.name.length < 3 || props.name.length > 15) {
+      this.addError(errorMessage.invalid_author_name_length(props.name));
     }
 
-    if (props.user?.length < 4 || props.user?.length > 50) {
-      this.addError(errorMessage.invalid_author_user_length);
+    if (props.user.length < 4 || props.user.length > 50) {
+      this.addError(errorMessage.invalid_author_user_length(props.user));
     }
 
-    const VALID_CHARACTERS = /[^A-Za-z0-9_]+/gim;
-
-    if (VALID_CHARACTERS.test(props.user)) {
-      this.addError(errorMessage.invalid_author_user_characters);
+    if (!this.VALID_USER_CHARACTERS.test(props.user)) {
+      this.addError(errorMessage.invalid_author_user_characters(props.user));
     }
 
     const avatar = Url.new(props.avatar);
@@ -53,8 +51,8 @@ export class Author {
 
     if (this.hasErrors()) {
       throw new DomainException({
+        name: errorMessage.author_entity_exception,
         message: this.getErrorMessages(),
-        name: "Invalid author props",
         stack: Author.name,
       });
     }

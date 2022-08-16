@@ -1,5 +1,6 @@
-import { Tweet } from "@/domain/aggregates/tweet";
+import { Template } from "@/domain/entities/template";
+import { Tweet } from "@/domain/entities/tweet";
 
 export interface PrintTweetService {
-  print(tweet: Tweet): Promise<void>;
+  print(tweet: Tweet, template: Template): Promise<void>;
 }

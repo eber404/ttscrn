@@ -23,6 +23,6 @@ describe("twitter url", () => {
     const tweet = TweetUrl.new(mock);
 
     // then
-    expect(tweet.unwrapErr()).toBe(errorMessage.invalid_tweet_url);
+    expect(tweet.unwrapErr()).toBe(errorMessage.invalid_tweet_url(mock));
   });
 });

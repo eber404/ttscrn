@@ -1,4 +1,4 @@
-import { twitterClient } from "@/infra/services/twitter/twitter-client";
+import { twitterClient } from "@/infra/services/twitter-api/twitter-client";
 
 import { InfraException } from "@/domain/errors/exceptions/infra-exception";
 import { GetTweetService } from "@/domain/services/get-tweet/get-tweet-service";
@@ -12,7 +12,7 @@ export class TwitterAPIGetTweetService implements GetTweetService {
       "tweet.fields": ["id", "text", "author_id", "created_at"],
     });
 
-    if (errors && errors?.length > 0) {
+    if (errors) {
       const { title, detail } = errors[0];
       throw new InfraException({
         name: title,

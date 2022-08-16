@@ -9,6 +9,6 @@ export class TweetReadyToPrintHandler implements EventHandler {
   public constructor(private readonly printTweetService: PrintTweetService) {}
 
   public async handle(event: TweetReadyToPrintEvent): Promise<void> {
-    await this.printTweetService.print(event.tweet);
+    await this.printTweetService.print(event.tweet, event.template);
   }
 }

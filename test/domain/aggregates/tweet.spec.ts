@@ -1,53 +1,34 @@
-import { Author, AuthorProps } from "@/domain/entities/author";
-import { errorMessage } from "@/domain/errors/error-message";
-import { TweetUrl } from "@/domain/value-objects/tweet-url";
-import { Url } from "@/domain/value-objects/url";
+import { Tweet } from "@/domain/entities/tweet";
+import { DomainException } from "@/domain/errors/exceptions/domain-exception";
 
-export interface TweetProps {
-  text: string;
-  author: AuthorProps;
-  url: string;
-}
+import { tweetPropsFactory } from "@test/mocks/tweet/tweet-props-mock";
 
-export class Tweet {
-  private static readonly errors: string[] = [];
+describe(Tweet.name, () => {
+  it("should instance tweet entity with valid props", async () => {
+    // given
+    const mock = tweetPropsFactory();
 
-  private constructor(
-    public readonly text: string,
-    public readonly author: Author,
-    public readonly url: TweetUrl,
-  ) {}
+    // when
+    const tweet = Tweet.new(mock);
 
-  private static addError(error: string): void {
-    this.errors.push(error);
-  }
+    // then
+    expect(tweet).toBeDefined();
+  });
 
-  private static hasErrors(): boolean {
-    return this.errors.length > 0;
-  }
+  it("should not instance tweet entity with invalid props", async () => {
+    try {
+      // given
+      const mock = tweetPropsFactory({
+        text: "",
+        createdAt: "potato",
+      });
 
-  private static getErrorMessages(): string {
-    return this.errors.filter((err) => err).join(", ");
-  }
+      // when
+      Tweet.new(mock);
 
-  public static new(props: TweetProps): Tweet {
-    const author = Author.new(props.author);
-    const url = Url.new(props.url);
-
-    const TWEET_MAX_LENGTH = 280;
-
-    if (props.text.length > TWEET_MAX_LENGTH) {
-      this.addError(errorMessage.invalid_tweet_text);
+      // then
+    } catch (error) {
+      expect(error).toBeInstanceOf(DomainException);
     }
-
-    if (url.isErr()) {
-      this.addError(url.unwrapErr());
-    }
-
-    if (this.hasErrors()) {
-      throw Error(this.getErrorMessages());
-    }
-
-    return new Tweet(props.text, author, url.unwrap());
-  }
-}
+  });
+});

@@ -1,11 +1,9 @@
-import { TwitterAPIGetTweetService } from "@/infra/services/twitter/twitter-get-tweet-service";
+import { faker } from "@faker-js/faker";
+
+import { TwitterAPIGetTweetService } from "@/infra/services/twitter-api/twitter-get-tweet-service";
 
 import { InfraException } from "@/domain/errors/exceptions/infra-exception";
 import { GetTweetService } from "@/domain/services/get-tweet/get-tweet-service";
-
-const JEST_TIMEOUT_IN_MILISEC = 60_000;
-
-jest.setTimeout(JEST_TIMEOUT_IN_MILISEC);
 
 interface Sut {
   service: GetTweetService;
@@ -35,10 +33,17 @@ describe(TwitterAPIGetTweetService.name, () => {
   });
 
   it("should throw if tweet is from a private account", async () => {
+    const error: InfraException = {
+      message: faker.lorem.sentence(),
+      name: faker.lorem.slug(),
+      stack: "from jest test",
+    };
+
     try {
       // given
       const tweetIdMock = "1558505499875835906";
       const { service } = makeSut();
+      jest.spyOn(service, "get").mockRejectedValue(new InfraException(error));
 
       // then
       await service.get(tweetIdMock);

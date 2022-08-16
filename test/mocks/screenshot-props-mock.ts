@@ -1,16 +1,29 @@
 import { faker } from "@faker-js/faker";
 
-import { ScreenshootProps } from "@/domain/entities/screenshot";
+import { ScreenshootProps } from "@/domain/aggregates/screenshot";
 
-export function screenshotPropsMock(
+export function screenshotPropsFactory(
   props?: Partial<ScreenshootProps>,
 ): ScreenshootProps {
   return {
-    tweet:
-      props?.tweet ??
-      "https://twitter.com/dinhoouropreto/status/319238848217493505",
-    image: props?.image ?? faker.internet.url(),
-    format: props?.format ?? "instagram_stories",
-    createdAt: faker.date.recent(),
+    image: faker.image.lorempixel.abstract(),
+    template: {
+      size: {
+        width: faker.datatype.number(),
+        height: faker.datatype.number(),
+        unit: "px",
+      },
+      social: "instagram_stories",
+    },
+    tweet: {
+      text: faker.lorem.sentence(3),
+      author: {
+        avatar: faker.internet.avatar(),
+        name: faker.name.firstName(),
+        user: faker.internet.userName().replace(/[^A-Za-z0-9_]+/gim, "_"),
+      },
+      createdAt: faker.date.recent().toISOString(),
+    },
+    ...props,
   };
 }

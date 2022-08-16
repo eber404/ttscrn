@@ -1,6 +1,8 @@
 import { isValid } from "date-fns";
 import { Err, Ok, Result } from "oxide.ts";
 
+import { errorMessage } from "@/domain/errors/error-message";
+
 export class SafeDate {
   public readonly value: Date;
 
@@ -9,19 +11,22 @@ export class SafeDate {
   }
 
   public static new(date: Date | string): Result<SafeDate, string> {
-    const [isValidDate, error] = this.validate(date);
+    const [isValidDate, errors] = this.validate(date);
 
-    if (!isValidDate) {
-      return Err(error);
-    }
-
-    return Ok(new SafeDate(date));
+    return isValidDate ? Ok(new SafeDate(date)) : Err(errors);
   }
 
-  private static validate(date: Date | string): [boolean, string] {
+  private static validate(props: Date | string): [boolean, string] {
     const errors = [];
 
+    const date = typeof props === "string" ? new Date(props) : props;
+
     const isValidDate = isValid(date);
+
+    if (!isValidDate) {
+      errors.push(errorMessage.invalid_date_format(props.toString()));
+    }
+
     return [isValidDate, errors.join(", ")];
   }
 }
