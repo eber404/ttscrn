@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 import { TwitterAPIGetTweetService } from "@/infra/services/twitter-api/twitter-get-tweet-service";
 
-import { InfraException } from "@/domain/errors/exceptions/infra-exception";
+import { InfraException } from "@/domain/errors/infra-error";
 import { GetTweetService } from "@/domain/services/get-tweet/get-tweet-service";
 
 interface Sut {

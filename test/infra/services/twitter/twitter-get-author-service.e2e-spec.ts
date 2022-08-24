@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 import { TwitterAPIGetAuthorService } from "@/infra/services/twitter-api/twitter-get-author-service";
 
-import { InfraException } from "@/domain/errors/exceptions/infra-exception";
+import { InfraException } from "@/domain/errors/infra-error";
 
 describe(TwitterAPIGetAuthorService.name, () => {
   it("should get twitter user with the given id", async () => {

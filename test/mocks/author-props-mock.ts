@@ -2,12 +2,15 @@ import { faker } from "@faker-js/faker";
 
 import { AuthorProps } from "@/domain/entities/author";
 
+import { userNameFactory } from "@test/helpers/username-factory";
+
 export function authorPropsMock(props?: Partial<AuthorProps>): AuthorProps {
+  const name = faker.name.firstName();
+
   return {
-    avatar: props?.avatar ?? faker.internet.url(),
-    name: props?.name ?? faker.name.firstName(),
-    user:
-      props?.user ??
-      faker.internet.userName().replace(/[^A-Za-z0-9_]+/gim, "_"),
+    avatar: faker.internet.url(),
+    name,
+    user: userNameFactory(name),
+    ...props,
   };
 }

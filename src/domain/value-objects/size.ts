@@ -1,7 +1,7 @@
 import { isNegative } from "class-validator";
 import { Ok, Result, Err } from "oxide.ts";
 
-import { errorMessage } from "@/domain/errors/error-message";
+import { errorMessage } from "@/domain/errors/error-messages";
 
 export type Unit = "px";
 

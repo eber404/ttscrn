@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Document</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        background-color: #000000;
+        font-family: "Roboto", sans-serif;
+        padding: 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .user-box {
+        display: flex;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 100%;
+        overflow: hidden;
+      }
+
+      .avatar > img {
+        width: 101%;
+        height: 101%;
+      }
+
+      .user-info-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 12px;
+      }
+
+      .user-info-name {
+        font-size: 15px;
+        font-weight: 500;
+        color: #e7e9ea;
+      }
+
+      .user-info-username {
+        font-size: 15px;
+        color: #71767a;
+      }
+
+      .tweet-box {
+        display: flex;
+        padding: 20px 0;
+      }
+
+      .tweet-text {
+        font-size: 23px;
+        color: #e7e9ea;
+      }
+
+      .tweet-footer {
+        display: flex;
+      }
+
+      .tweet-date {
+        font-size: 15px;
+        font-weight: 400;
+        color: #71767a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="user-box">
+        <div class="avatar">
+          <img src="https://www.w3schools.com/howto/img_avatar.png" />
+        </div>
+        <div class="user-info-box">
+          <p class="user-info-name">eber</p>
+          <p class="user-info-username">@eber404</p>
+        </div>
+      </div>
+
+      <div class="tweet-box">
+        <p class="tweet-text">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five.
+        </p>
+      </div>
+
+      <div class="tweet-footer">
+        <p class="tweet-date">12:18 AM · Aug 17, 2022 · Twitter for iPhone</p>
+      </div>
+    </div>
+  </body>
+</html>

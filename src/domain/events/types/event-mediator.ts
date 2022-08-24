@@ -4,5 +4,5 @@ import { DomainEvent } from "./domain-event";
 
 export interface EventMediator {
   subscribe(handler: EventHandler): void;
-  publish(event: DomainEvent): void;
+  publish(event: DomainEvent): Promise<void> | void;
 }

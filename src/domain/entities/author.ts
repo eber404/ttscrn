@@ -1,62 +1,40 @@
-import { errorMessage } from "@/domain/errors/error-message";
-import { DomainException } from "@/domain/errors/exceptions/domain-exception";
-import { Url } from "@/domain/value-objects/url";
+import { z } from "zod";
 
-export interface AuthorProps {
-  name: string;
-  user: string;
-  avatar: string;
-}
+import { DomainError } from "@/domain/errors/domain-error";
+import { DomainValidation } from "@/domain/validations/domain-validation";
 
-export class Author {
-  private static readonly errors: string[] = [];
-  private static readonly VALID_USER_CHARACTERS = /[A-Za-z0-9_]+/gim;
+const VALID_USERNAME_REGEX = /^[A-Za-z0-9_]{1,15}$/;
 
+const AuthorSchema = z.object({
+  name: z.string().min(3).max(15),
+  user: z.string().regex(VALID_USERNAME_REGEX),
+  avatar: z.string().url(),
+});
+
+export type AuthorProps = z.infer<typeof AuthorSchema>;
+
+export class Author extends DomainValidation {
   private constructor(
     public readonly name: string,
     public readonly user: string,
-    public readonly avatar: Url,
-  ) {}
-
-  private static addError(error: string): void {
-    this.errors.push(error);
-  }
-
-  private static hasErrors(): boolean {
-    return this.errors.length > 0;
-  }
-
-  private static getErrorMessages(): string {
-    return this.errors.filter((err) => err).join(", ");
+    public readonly avatar: string,
+  ) {
+    super();
   }
 
   public static new(props: AuthorProps): Author {
-    if (props.name.length < 3 || props.name.length > 15) {
-      this.addError(errorMessage.invalid_author_name_length(props.name));
-    }
+    const validation = this.validate<Author>(AuthorSchema, props);
 
-    if (props.user.length < 4 || props.user.length > 50) {
-      this.addError(errorMessage.invalid_author_user_length(props.user));
-    }
-
-    if (!this.VALID_USER_CHARACTERS.test(props.user)) {
-      this.addError(errorMessage.invalid_author_user_characters(props.user));
-    }
-
-    const avatar = Url.new(props.avatar);
-
-    if (avatar.isErr()) {
-      this.addError(errorMessage.invalid_url("for avatar"));
-    }
-
-    if (this.hasErrors()) {
-      throw new DomainException({
-        name: errorMessage.author_entity_exception,
-        message: this.getErrorMessages(),
+    if (validation.isErr()) {
+      throw new DomainError({
+        name: "Invalid props for entity",
+        message: validation.unwrapErr(),
         stack: Author.name,
       });
     }
 
-    return new Author(props.name, props.user, avatar.unwrap());
+    const result = validation.unwrap();
+
+    return new Author(result.name, result.name, result.avatar);
   }
 }

@@ -1,5 +1,5 @@
-import { GetAuthorDto } from "./get-author-service-dto";
+import { GetAuthorServiceDto } from "./get-author-service-dto";
 
 export interface GetAuthorService {
-  get(authorId: string): Promise<GetAuthorDto>;
+  get(authorId: string): Promise<GetAuthorServiceDto>;
 }

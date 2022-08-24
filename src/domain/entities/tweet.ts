@@ -1,57 +1,60 @@
-import { Author, AuthorProps } from "@/domain/entities/author";
-import { errorMessage } from "@/domain/errors/error-message";
-import { DomainException } from "@/domain/errors/exceptions/domain-exception";
-import { SafeDate } from "@/domain/value-objects/safe-date";
+import { z } from "zod";
 
-export interface TweetProps {
-  text: string;
+import { Author, AuthorProps } from "@/domain/entities/author";
+import { DomainError } from "@/domain/errors/domain-error";
+import { DomainValidation } from "@/domain/validations/domain-validation";
+
+const TWEET_MAX_LENGTH = 280;
+const TWEET_MIN_LENGTH = 1;
+const DEVICE_MIN_LENGTH = 1;
+
+const TweetSchema = z.object({
+  id: z.string().min(1),
+  text: z.string().min(TWEET_MIN_LENGTH).max(TWEET_MAX_LENGTH),
+  device: z.string().min(DEVICE_MIN_LENGTH),
+  createdAt: z.date(),
+});
+
+type TweetSchemaProps = z.infer<typeof TweetSchema>;
+
+interface TweetProps extends Omit<TweetSchemaProps, "createdAt"> {
   author: AuthorProps;
   createdAt: Date | string;
 }
 
-export class Tweet {
-  private static readonly errors: string[] = [];
-
+export class Tweet extends DomainValidation {
   private constructor(
+    public readonly id: string,
     public readonly text: string,
     public readonly author: Author,
-    public readonly createdAt: SafeDate,
-  ) {}
-
-  private static addError(error: string): void {
-    this.errors.push(error);
-  }
-
-  private static hasErrors(): boolean {
-    return this.errors.length > 0;
-  }
-
-  private static getErrorMessages(): string {
-    return this.errors.filter((err) => err).join(", ");
+    public readonly device: string,
+    public readonly createdAt: Date,
+  ) {
+    super();
   }
 
   public static new(props: TweetProps): Tweet {
-    const author = Author.new(props.author);
-    const createdAt = SafeDate.new(props.createdAt);
+    const validation = this.validate<Tweet, TweetProps>(TweetSchema, {
+      ...props,
+      createdAt: new Date(props.createdAt),
+    });
 
-    const TWEET_MAX_LENGTH = 280;
-
-    if (props.text.length > TWEET_MAX_LENGTH || props.text.length === 0) {
-      this.addError(errorMessage.invalid_tweet_text(props.text));
-    }
-
-    if (createdAt.isErr()) {
-      this.addError(createdAt.unwrapErr());
-    }
-
-    if (this.hasErrors()) {
-      throw new DomainException({
-        name: errorMessage.tweet_entity_exception,
-        message: this.getErrorMessages(),
+    if (validation.isErr()) {
+      throw new DomainError({
+        name: "Invalid props for entity",
+        message: validation.unwrapErr(),
         stack: Tweet.name,
       });
     }
 
-    return new Tweet(props.text, author, createdAt.unwrap());
+    const result = validation.unwrap();
+
+    return new Tweet(
+      result.id,
+      result.text,
+      result.author,
+      result.device,
+      result.createdAt,
+    );
   }
 }

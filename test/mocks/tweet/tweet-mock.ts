@@ -1,16 +1,21 @@
 import { faker } from "@faker-js/faker";
 
-import { Tweet } from "@/domain/entities/tweet";
+import { Tweet, TweetProps } from "@/domain/entities/tweet";
 
-export function tweetMockFactory(props?: Partial<Tweet>): Tweet {
+import { userNameFactory } from "@test/helpers/username-factory";
+
+export function tweetMockFactory(props?: Partial<TweetProps>): Tweet {
+  const name = faker.name.firstName();
+
   return Tweet.new({
     text: faker.lorem.sentence(10),
     createdAt: faker.date.recent(),
     author: {
       avatar: faker.internet.avatar(),
-      name: faker.name.firstName(),
-      user: faker.internet.userName().replace(/[^A-Za-z0-9_]+/gim, "_"),
-      ...props,
+      name,
+      user: userNameFactory(name),
     },
+    device: faker.internet.userAgent().split(" ")[0],
+    ...props,
   });
 }

@@ -1,5 +1,5 @@
 import { Tweet } from "@/domain/entities/tweet";
-import { DomainException } from "@/domain/errors/exceptions/domain-exception";
+import { DomainException } from "@/domain/errors/exceptions/domain-error";
 
 import { tweetPropsFactory } from "@test/mocks/tweet/tweet-props-mock";
 

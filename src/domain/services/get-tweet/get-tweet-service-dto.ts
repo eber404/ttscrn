@@ -3,4 +3,5 @@ export interface GetTweetServiceDTO {
   text: string;
   authorId: string;
   createdAt: string;
+  device: string;
 }

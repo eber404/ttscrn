@@ -1,13 +1,13 @@
 import { twitterClient } from "@/infra/services/twitter-api/twitter-client";
 
-import { InfraException } from "@/domain/errors/exceptions/infra-exception";
-import { GetAuthorDto } from "@/domain/services/get-author/get-author-service-dto";
+import { InfraException } from "@/domain/errors/infra-error";
+import { GetAuthorServiceDto } from "@/domain/services/get-author/get-author-service-dto";
 import { GetAuthorService } from "@/domain/services/get-author/get-author-service-id";
 
 export class TwitterAPIGetAuthorService implements GetAuthorService {
   private readonly client = twitterClient;
 
-  public async get(authorId: string): Promise<GetAuthorDto> {
+  public async get(authorId: string): Promise<GetAuthorServiceDto> {
     const { data, errors } = await this.client.v2.user(authorId, {
       "user.fields": ["id", "name", "username", "profile_image_url"],
     });

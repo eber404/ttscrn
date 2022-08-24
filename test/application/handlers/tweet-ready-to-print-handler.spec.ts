@@ -1,6 +1,8 @@
 import { TweetReadyToPrintHandler } from "@/application/handlers/tweet-ready-to-print-handler";
 
 import { Tweet } from "@/domain/entities/tweet";
+import { Templates } from "@/domain/enums/templates";
+import { Themes } from "@/domain/enums/theme";
 import { TweetReadyToPrintEvent } from "@/domain/events/tweet-ready-to-print-event";
 import { EventMediator } from "@/domain/events/types/event-mediator";
 import { PrintTweetService } from "@/domain/services/print-tweet/print-tweet-service";
@@ -22,7 +24,9 @@ const makeSut = (props?: Partial<Sut>): Sut => {
   const service = new PrintTweetServiceDouble();
   const handler = new TweetReadyToPrintHandler(service);
   const tweet = tweetMockFactory();
-  const event = new TweetReadyToPrintEvent(tweet);
+  const template = Templates.whatsapp_post;
+  const theme = Themes.light;
+  const event = new TweetReadyToPrintEvent(tweet, template, theme);
 
   return {
     mediator,
@@ -37,9 +41,9 @@ const makeSut = (props?: Partial<Sut>): Sut => {
 describe(TweetReadyToPrintHandler.name, () => {
   it(`should call print tweet service and publish a ScreenshotDoneEvent`, async () => {
     // given
-    const { handler, mediator, service, event, tweet } = makeSut();
-    jest.spyOn(handler, "handle");
+    const { handler, mediator, service, event } = makeSut();
     jest.spyOn(service, "print");
+    jest.spyOn(handler, "handle");
     mediator.subscribe(handler);
 
     // when
@@ -47,6 +51,10 @@ describe(TweetReadyToPrintHandler.name, () => {
 
     // then
     expect(handler.handle).toBeCalledWith(event);
-    expect(service.print).toBeCalledWith(tweet);
+    expect(service.print).toBeCalledWith(
+      event.tweet,
+      event.template,
+      event.theme,
+    );
   });
 });

@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-import { errorMessage } from "@/domain/errors/error-message";
+import { errorMessage } from "@/domain/errors/error-messages";
 import { TweetUrl } from "@/domain/value-objects/tweet-url";
 
 describe("twitter url", () => {

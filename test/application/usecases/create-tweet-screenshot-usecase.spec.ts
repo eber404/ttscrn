@@ -2,8 +2,8 @@ import { faker } from "@faker-js/faker";
 
 import { CreateTweetScreenshotUseCase } from "@/application/usecases/create-tweet-screenshot-usecase";
 
-import { InfraException } from "@/domain/errors/exceptions/infra-exception";
-import { ValidTweetFoundEvent } from "@/domain/events/tweet-found-event";
+import { InfraException } from "@/domain/errors/infra-error";
+import { TweetFoundEvent } from "@/domain/events/tweet-found-event";
 import { EventMediator } from "@/domain/events/types/event-mediator";
 import { GetTweetService } from "@/domain/services/get-tweet/get-tweet-service";
 
@@ -14,7 +14,7 @@ import { validTweetFoundEventFactory } from "@test/mocks/valid-tweet-found-event
 interface Sut {
   service: GetTweetService;
   mediator: EventMediator;
-  event: ValidTweetFoundEvent;
+  event: TweetFoundEvent;
   usecase: CreateTweetScreenshotUseCase;
 }
 
@@ -45,7 +45,11 @@ describe(CreateTweetScreenshotUseCase.name, () => {
     jest.spyOn(mediator, "publish");
 
     // when
-    await usecase.execute({ tweetId: tweetIdMock });
+    await usecase.execute({
+      tweetId: tweetIdMock,
+      shape: "twitter_timeline",
+      theme: "dark",
+    });
 
     // then
     expect(service.get).toBeCalledWith(tweetIdMock);
@@ -66,7 +70,11 @@ describe(CreateTweetScreenshotUseCase.name, () => {
       const inputMock = "123123123123";
 
       // when
-      await usecase.execute({ tweetId: inputMock });
+      await usecase.execute({
+        tweetId: inputMock,
+        shape: "instagram_stories",
+        theme: "light",
+      });
 
       // then
       expect(mediator.publish).not.toBeCalled();

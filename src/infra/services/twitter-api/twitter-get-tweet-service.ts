@@ -1,6 +1,6 @@
 import { twitterClient } from "@/infra/services/twitter-api/twitter-client";
 
-import { InfraException } from "@/domain/errors/exceptions/infra-exception";
+import { InfraException } from "@/domain/errors/infra-error";
 import { GetTweetService } from "@/domain/services/get-tweet/get-tweet-service";
 import { GetTweetServiceDTO } from "@/domain/services/get-tweet/get-tweet-service-dto";
 
@@ -9,7 +9,7 @@ export class TwitterAPIGetTweetService implements GetTweetService {
 
   public async get(tweetId: string): Promise<GetTweetServiceDTO> {
     const { data, errors } = await this.client.v2.singleTweet(tweetId, {
-      "tweet.fields": ["id", "text", "author_id", "created_at"],
+      "tweet.fields": ["id", "text", "author_id", "created_at", "source"],
     });
 
     if (errors) {
@@ -26,6 +26,7 @@ export class TwitterAPIGetTweetService implements GetTweetService {
       text: data.text,
       authorId: data.author_id,
       createdAt: data.created_at,
+      device: data.source,
     };
   }
 }

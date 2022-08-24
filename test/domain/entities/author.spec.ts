@@ -1,5 +1,5 @@
 import { Author } from "@/domain/entities/author";
-import { DomainException } from "@/domain/errors/exceptions/domain-exception";
+import { DomainException } from "@/domain/errors/exceptions/domain-error";
 import { Url } from "@/domain/value-objects/url";
 
 import { authorPropsMock } from "@test/mocks/author-props-mock";

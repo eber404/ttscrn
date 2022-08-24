@@ -5,8 +5,8 @@ import { EventName } from "@/domain/events/types/event-name";
 export class EventHandlerDouble implements EventHandler {
   public eventName: EventName = "TEST_EVENT" as EventName;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handle(event: DomainEvent): void {
-    console.log("[EventHandlerDouble] event received:", event);
     return;
   }
 }

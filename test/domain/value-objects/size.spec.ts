@@ -1,4 +1,4 @@
-import { errorMessage } from "@/domain/errors/error-message";
+import { errorMessage } from "@/domain/errors/error-messages";
 import { Size, Unit } from "@/domain/value-objects/size";
 
 describe(Size.name, () => {

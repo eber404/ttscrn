@@ -2,9 +2,13 @@ import { faker } from "@faker-js/faker";
 
 import { ScreenshootProps } from "@/domain/aggregates/screenshot";
 
+import { userNameFactory } from "@test/helpers/username-factory";
+
 export function screenshotPropsFactory(
   props?: Partial<ScreenshootProps>,
 ): ScreenshootProps {
+  const name = faker.name.firstName();
+
   return {
     image: faker.image.lorempixel.abstract(),
     template: {
@@ -13,16 +17,17 @@ export function screenshotPropsFactory(
         height: faker.datatype.number(),
         unit: "px",
       },
-      social: "instagram_stories",
+      shape: "instagram_stories",
     },
     tweet: {
       text: faker.lorem.sentence(3),
       author: {
         avatar: faker.internet.avatar(),
-        name: faker.name.firstName(),
-        user: faker.internet.userName().replace(/[^A-Za-z0-9_]+/gim, "_"),
+        name,
+        user: userNameFactory(name),
       },
       createdAt: faker.date.recent().toISOString(),
+      device: faker.internet.userAgent().split(" ")[0],
     },
     ...props,
   };
