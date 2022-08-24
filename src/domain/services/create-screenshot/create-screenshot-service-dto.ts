@@ -1,4 +1,4 @@
-export interface PrintTweetDTO {
+export interface CreateScreenshotDTO {
   tweet: {
     text: string;
     createdAt: string;

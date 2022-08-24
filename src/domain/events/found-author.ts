@@ -5,5 +5,8 @@ import { EventName } from "@/domain/events/types/event-name";
 export class FoundAuthorEvent implements DomainEvent {
   public readonly name: EventName = "FOUND_AUTHOR";
 
-  public constructor(public readonly tweet: Tweet) {}
+  public constructor(
+    public readonly tweet: Tweet,
+    public readonly processId: string,
+  ) {}
 }

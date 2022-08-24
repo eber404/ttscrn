@@ -24,8 +24,8 @@ export class PrintTweetDTOMapper {
         text: tweet.text,
         user: tweet.author.user,
         name: tweet.author.name,
-        avatar: tweet.author.avatar.value,
-        createdAt: this.formatDate(tweet.createdAt.value),
+        avatar: tweet.author.avatar,
+        createdAt: this.formatDate(tweet.createdAt),
         device: tweet.device,
       },
       theme: {

@@ -1,5 +1,5 @@
-import { ThemeType, Theme } from "@/domain/entities/theme";
+import { ThemeName, Theme } from "@/domain/entities/theme";
 
 export interface CreateThemeService {
-  create: (theme: ThemeType) => Theme;
+  create: (theme: ThemeName) => Promise<Theme>;
 }

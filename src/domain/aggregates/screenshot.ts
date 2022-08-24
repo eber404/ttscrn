@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { Template } from "@/domain/aggregates/template";
 import { Tweet } from "@/domain/entities/tweet";
-import { DomainException } from "@/domain/errors/domain-error";
+import { DomainError } from "@/domain/errors/domain-error";
 import { DomainValidation } from "@/domain/validations/domain-validation";
 
 const ScreenshotSchema = z.object({
@@ -35,8 +35,8 @@ export class Screenshot extends DomainValidation {
     const validation = this.validate<Screenshot>(ScreenshotSchema, props);
 
     if (validation.isErr()) {
-      throw new DomainException({
-        name: "Invalid props for entity",
+      throw new DomainError({
+        name: "Invalid props for aggregate",
         message: validation.unwrapErr(),
         stack: Screenshot.name,
       });

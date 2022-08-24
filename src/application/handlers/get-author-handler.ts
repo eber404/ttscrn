@@ -31,7 +31,7 @@ export class GetAuthorHandler implements EventHandler {
       },
     });
 
-    const foundAuthorEvent = new FoundAuthorEvent(tweet);
+    const foundAuthorEvent = new FoundAuthorEvent(tweet, event.processId);
 
     this.mediator.publish(foundAuthorEvent);
   }

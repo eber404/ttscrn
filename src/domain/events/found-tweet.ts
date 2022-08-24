@@ -5,5 +5,8 @@ import { GetTweetServiceDTO } from "@/domain/services/get-tweet/get-tweet-servic
 export class FoundTweetEvent implements DomainEvent {
   public readonly name: EventName = "FOUND_TWEET";
 
-  public constructor(public readonly tweet: GetTweetServiceDTO) {}
+  public constructor(
+    public readonly tweet: GetTweetServiceDTO,
+    public readonly processId: string,
+  ) {}
 }
